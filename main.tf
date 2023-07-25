@@ -4,6 +4,12 @@ resource "aws_route53_zone" "zone_main" {
   comment = var.host_domain_name
 }
 
+# ACM
+resource "aws_acm_certificate" "acm" {
+  domain_name       = var.sub_domain
+  validation_method = "DNS"
+}
+
 # VPC
 module "vpc_main" {
   source = "./modules/aws/vpc"
