@@ -134,3 +134,34 @@ module "api_gateway" {
 
   route_key = "ANY /{proxy+}"
 }
+
+resource "aws_apigatewayv2_domain_name" "apigateway_domain_name" {
+  # api gateway 커스텀 도메인 등록
+  domain_name = var.api_server_domain
+
+  domain_name_configuration {
+    certificate_arn = aws_acm_certificate.acm.arn
+    endpoint_type   = "REGIONAL"
+    security_policy = "TLS_1_2"
+  }
+}
+
+resource "aws_route53_record" "api_gateway" {
+  # route53에 - api gateway 커스텀 도메인 등록
+  name    = aws_apigatewayv2_domain_name.apigateway_domain_name.domain_name
+  type    = "A"
+  zone_id = aws_route53_zone.zone_main.zone_id
+
+  alias {
+    name                   = aws_apigatewayv2_domain_name.apigateway_domain_name.domain_name_configuration[0].target_domain_name
+    zone_id                = aws_apigatewayv2_domain_name.apigateway_domain_name.domain_name_configuration[0].hosted_zone_id
+    evaluate_target_health = false
+  }
+}
+
+resource "aws_apigatewayv2_api_mapping" "api_gateway" {
+  # api gateway과 등록한 커스텀 domain연결
+  api_id      = module.api_gateway.id
+  domain_name = aws_apigatewayv2_domain_name.apigateway_domain_name.id
+  stage       = module.api_gateway.stage_id
+}
