@@ -22,9 +22,9 @@ output "s3_domain" {
   value = module.s3.domain_name
 }
 
-# output "ns_records" {
-#   value = aws_route53_zone.zone_main.name_servers
-# }
+output "ns_records" {
+  value = aws_route53_zone.zone_main.name_servers
+}
 
 output "api_gateway_endpoint" {
   value = module.api_gateway.endpoint

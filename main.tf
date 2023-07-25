@@ -1,3 +1,9 @@
+# Route53
+resource "aws_route53_zone" "zone_main" {
+  name = var.host_domain_name
+  comment = var.host_domain_name
+}
+
 # VPC
 module "vpc_main" {
   source = "./modules/aws/vpc"
