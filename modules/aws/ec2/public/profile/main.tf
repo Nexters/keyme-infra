@@ -1,3 +1,4 @@
+# EC2 Role 만들기
 resource "aws_iam_role" "ec2_role" {
   name = "${var.project_name}-public-ec2-role"
   assume_role_policy = data.aws_iam_policy_document.ec2_assume_role.json
@@ -16,6 +17,7 @@ data "aws_iam_policy_document" "ec2_assume_role" {
   }
 }
 
+# ECR 접근 허용 정책
 resource "aws_iam_policy" "ec2_role_policy" {
   name = "${var.project_name}-public-ec2-policy"
   path = "/"
@@ -60,6 +62,28 @@ resource "aws_iam_policy_attachment" "ec2_policy_role_attachment" {
   policy_arn = aws_iam_policy.ec2_role_policy.arn
 }
 
+
+# ssm 접근 허용 정책(EC2 용)
+data "aws_iam_policy" "ec2_ssm_policy" {
+  name = "AmazonSSMManagedInstanceCore"
+}
+
+resource "aws_iam_role_policy_attachment" "ec2_ssm_policy_attachment" {
+  role       = aws_iam_role.ec2_role.name
+  policy_arn = data.aws_iam_policy.ec2_ssm_policy.arn
+}
+
+# cloudwatch agent 허용 정책(EC2 용)
+data "aws_iam_policy" "ec2_cloudwatch_policy" {
+  name = "CloudWatchAgentServerPolicy"
+}
+
+resource "aws_iam_role_policy_attachment" "ec2_cloudwatch_policy_attachment" {
+  role       = aws_iam_role.ec2_role.name
+  policy_arn = data.aws_iam_policy.ec2_cloudwatch_policy.arn
+}
+
+# ec2 instance profile 
 resource "aws_iam_instance_profile" "ec2_profile" {
   name = "${var.project_name}-public-ec2-profile"
   role = aws_iam_role.ec2_role.name
