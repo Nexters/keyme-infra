@@ -33,3 +33,12 @@ output "api_gateway_endpoint" {
 output "api_gateway_url" {
   value = module.api_gateway.url
 }
+
+# log Group
+output "ec2_log_group_name" {
+  value = module.ec2_log_group.log_group_name
+}
+
+output "ec2_log_group_arn" {
+  value = module.ec2_log_group.log_group_arn
+}

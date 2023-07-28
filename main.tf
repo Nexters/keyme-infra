@@ -165,3 +165,9 @@ resource "aws_apigatewayv2_api_mapping" "api_gateway" {
   domain_name = aws_apigatewayv2_domain_name.apigateway_domain_name.id
   stage       = module.api_gateway.stage_id
 }
+
+# CloudWatch Log
+module "ec2_log_group" {
+  source = "./modules/aws/cloud_watch/api_ec2"
+  project_name = var.project_name
+}
