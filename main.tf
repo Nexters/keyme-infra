@@ -120,7 +120,12 @@ module "s3" {
   name = "${var.project_name}-ec2-access-s3"
 }
 
-# API Gateway
+# API Gateway - Cloudwatch, Domain 등
+module "apigateway_log_group" {
+  source = "./modules/aws/cloud_watch/api_gateway"
+  project_name = var.project_name
+}
+
 module "api_gateway" {
   source = "./modules/aws/api_gateway"
   name = "${var.project_name}-api-gateway"
@@ -133,6 +138,9 @@ module "api_gateway" {
   integration_ip = aws_eip.ec2_eip.public_ip
 
   route_key = "ANY /{proxy+}"
+  log_group_arn = module.apigateway_log_group.log_group_arn
+
+  depends_on = [ module.apigateway_log_group ]
 }
 
 resource "aws_apigatewayv2_domain_name" "apigateway_domain_name" {
@@ -166,7 +174,7 @@ resource "aws_apigatewayv2_api_mapping" "api_gateway" {
   stage       = module.api_gateway.stage_id
 }
 
-# CloudWatch Log
+# EC2 CloudWatch Log Group
 module "ec2_log_group" {
   source = "./modules/aws/cloud_watch/api_ec2"
   project_name = var.project_name
