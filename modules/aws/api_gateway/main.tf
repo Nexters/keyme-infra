@@ -8,11 +8,10 @@ resource "aws_apigatewayv2_stage" "stage" {
   api_id = aws_apigatewayv2_api.api_gateway.id
   name = var.stage
   auto_deploy = true
-
-  access_log_settings {
-    destination_arn = var.log_group_arn
-    format = "{\"requestId\":\"$context.requestId\",\"ip\":\"$context.identity.sourceIp\",\"user\":\"$context.identity.user\",\"requestTime\":\"$context.requestTime\",\"httpMethod\":\"$context.httpMethod\",\"resourcePath\":\"$context.routeKey\",\"status\":\"$context.status\",\"protocol\":\"$context.protocol\",\"responseLength\":\"$context.responseLength\"}"
-  }
+  # access_log_settings {
+  #   destination_arn = var.log_group_arn
+  #   format = "{\"requestId\":\"$context.requestId\",\"ip\":\"$context.identity.sourceIp\",\"user\":\"$context.identity.user\",\"requestTime\":\"$context.requestTime\",\"httpMethod\":\"$context.httpMethod\",\"resourcePath\":\"$context.routeKey\",\"status\":\"$context.status\",\"protocol\":\"$context.protocol\",\"responseLength\":\"$context.responseLength\"}"
+  # }
 }
 
 resource "aws_apigatewayv2_integration" "integration" {
