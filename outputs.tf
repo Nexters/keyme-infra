@@ -22,6 +22,10 @@ output "s3_domain" {
   value = module.s3.domain_name
 }
 
+output "cloud_front_domain" {
+  value = module.cloud_front.url
+}
+
 output "ns_records" {
   value = aws_route53_zone.zone_main.name_servers
 }

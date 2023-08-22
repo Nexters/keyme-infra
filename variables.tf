@@ -13,6 +13,8 @@ variable "ec2_inbound_rule" { }
 variable "db_inbound_rule" { }
 variable "outbound_rule" { }
 
+variable "s3_origin_id" { }
+
 variable "key_pair_name" { }
 variable "db_username" { }
 variable "db_password" { }

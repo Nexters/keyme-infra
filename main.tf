@@ -114,6 +114,14 @@ resource "aws_db_instance" "db" {
   skip_final_snapshot = true
 }
 
+# CloudFront
+module "cloud_front" {
+  source = "./modules/aws/cloud_front"
+  project_name = var.project_name
+  s3_origin_id = var.s3_origin_id
+  s3_domain_name = module.s3.domain_name
+}
+
 # S3
 module "s3" {
   source = "./modules/aws/s3/ec2_access"
