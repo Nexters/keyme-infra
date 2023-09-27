@@ -114,6 +114,22 @@ resource "aws_db_instance" "db" {
   skip_final_snapshot = true
 }
 
+#ElastiCache
+module "redis_sg" {
+  source = "./modules/aws/security_group"
+  name = "${var.project_name}-redis-sg"
+  vpc_id = module.vpc_main.vpc_id
+  inbound_rules = var.redis_inbound_rule
+  outbound_rules = var.outbound_rule
+}
+
+module "redis" {
+  source = "./modules/aws/elastic_cache"
+  name = var.project_name
+  subnet_ids = module.vpc_main.private_subnets_ids
+  security_group_id = module.redis_sg.id
+}
+
 # CloudFront
 module "cloud_front" {
   source = "./modules/aws/cloud_front"

@@ -18,6 +18,10 @@ output "rds_endpoint" {
   value = aws_db_instance.db.endpoint
 }
 
+output "redis_endpoint" {
+  value = module.redis.endpoint
+}
+
 output "s3_domain" {
   value = module.s3.domain_name
 }
