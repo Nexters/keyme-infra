@@ -19,3 +19,6 @@ variable "s3_origin_id" { }
 variable "key_pair_name" { }
 variable "db_username" { }
 variable "db_password" { }
+
+variable "web_front_domain" { }
+variable "web_front_cname" { }

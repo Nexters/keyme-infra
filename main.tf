@@ -4,6 +4,14 @@ resource "aws_route53_zone" "zone_main" {
   comment = var.host_domain_name
 }
 
+resource "aws_route53_record" "web_front_domain_record" {
+  zone_id = aws_route53_zone.zone_main.zone_id
+  name    = var.web_front_cname  
+  type    = "CNAME"
+  ttl     = 86400
+  records = [var.web_front_domain]
+}
+
 # ACM
 resource "aws_acm_certificate" "acm" {
   domain_name       = var.sub_domain
